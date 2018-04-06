@@ -72,8 +72,18 @@ void PrintHelp()
             <<"------------------------------------------------------------------"<<endl
             <<"Multrec takes as input a species tree S, a set of gene trees, a duplication cost, a loss cost and a parameter duplication height h.  The output is a mapping of the gene tree nodes to S that minimizes the segmental reconciliation cost, assuming that there exists such a mapping that has duplications sum-of-heights at most h.  If loss cost >= dup cost, the LCA mapping is returned."<<endl
             <<"The leaves of the gene trees must map to the leaves of S.  The gene tree leaves are assumed to have the format [species_name]__[gene_name], for example HUMAN_BRCA2 indicates that the gene is mapped to the leaf of S names HUMAN.  The gene/species separator can be changed with the -spsep argument, and the position of the species name in the gene name with the -spindex argument, indexed at 0.  "<<endl
-            <<"If your genes are named e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep \"_\" -spindex 1"<<endl
-            <<""<<endl
+            <<"If your genes are name e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep \"_\" -spindex 1"<<endl
+            <<endl
+            <<"The format of the output is 5 lines, as follows"<<endl
+            <<"COST=[total cost of mapping]"<<endl
+            <<"DUPHEIGHT=[sum of duplication heights]"<<endl
+            <<"NBLOSSES=[number of losses]"<<endl
+            <<"SPECIESTREE=[species tree newick, with internal nodes labeled"<<endl
+            <<"GENETREES=[all gene tree newick separated by ;.  Internal nodes are labeled by mapping]"<<endl
+            <<endl
+            <<"If no solution is found (when h is too small), then the output is simply"<<endl
+            <<"NO SOLUTION FOUND"<<endl
+            <<endl
             <<"Required arguments:"<<endl
             <<"At least one of -g or -gf must be specified, and at least one of -s or -sf must be specified."<<endl
             <<"-g   [g1;g2;...;gk]   Here g1,g2,...,gk are gene trees"<<endl
@@ -90,6 +100,7 @@ void PrintHelp()
             <<"-d   [double]         The cost for one height of duplication.  Default=3"<<endl
             <<"-l   [double]         The cost for one loss.  Default=1"<<endl
             <<"-h   [int]            Maximum allowed duplication sum-of-heights.  Default=20"<<endl
+            <<"-o   [file]           Output file.  Default=output to console"<<endl
             <<"-spsep   [string]     Gene/species separator in the gene names.  Default=__"<<endl
             <<"-spindex [int]        Position of the species in the gene names, after "<<endl
             <<"                      being split by the gene/species separator.  Default=0"<<endl
@@ -129,6 +140,11 @@ MultiGeneReconcilerInfo Execute(map<string, string> args)
         maxDupheight = Util::ToInt(args["h"]);
     }
 
+    string outfile = "";
+    if (args.find("o") != args.end())
+    {
+        outfile = args["o"];
+    }
     //parse gene trees, either from command line or from file
     if (args.find("g") != args.end())
     {
@@ -250,7 +266,32 @@ MultiGeneReconcilerInfo Execute(map<string, string> args)
 
         info = reconciler.Reconcile();
 
-        cout<<"BEST COST IS "<<info.GetCost(dupcost, losscost)<<endl;
+        string output = "";
+        if (info.isBad)
+        {
+            output = "NO SOLUTION FOUND";
+        }
+        else
+        {
+            output += "COST=" + Util::ToString(info.GetCost(dupcost, losscost)) + "\n";
+            output += "DUPHEIGHT=" + Util::ToString(info.dupHeightSum) + "\n";
+            output += "NBLOSSES=" + Util::ToString(info.nbLosses) + "\n";
+            output += "SPECIESTREE=" + NewickLex::ToNewickString(speciesTree) + "\n";
+
+            LabelGeneTreesWithSpeciesMapping(geneTrees, speciesTree, reconciler, info, false);
+
+            output += "GENETREES=";
+            for (int t = 0; t < geneTrees.size(); t++)
+            {
+                output += NewickLex::ToNewickString(geneTrees[t]);
+            }
+            output += "\n";
+        }
+
+        if (outfile == "")
+            cout<<output;
+        else
+            Util::WriteFileContent(outfile, output);
 
     }
 
