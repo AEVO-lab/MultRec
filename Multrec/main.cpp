@@ -72,7 +72,7 @@ void PrintHelp()
             <<"------------------------------------------------------------------"<<endl
             <<"Multrec takes as input a species tree S, a set of gene trees, a duplication cost, a loss cost and a parameter duplication height h.  The output is a mapping of the gene tree nodes to S that minimizes the segmental reconciliation cost, assuming that there exists such a mapping that has duplications sum-of-heights at most h.  If loss cost >= dup cost, the LCA mapping is returned."<<endl
             <<"The leaves of the gene trees must map to the leaves of S.  The gene tree leaves are assumed to have the format [species_name]__[gene_name], for example HUMAN_BRCA2 indicates that the gene is mapped to the leaf of S names HUMAN.  The gene/species separator can be changed with the -spsep argument, and the position of the species name in the gene name with the -spindex argument, indexed at 0.  "<<endl
-            <<"If your genes are name e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep \"_\" -spindex 1"<<endl
+            <<"If your genes are named e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep \"_\" -spindex 1"<<endl
             <<""<<endl
             <<"Required arguments:"<<endl
             <<"At least one of -g or -gf must be specified, and at least one of -s or -sf must be specified."<<endl
