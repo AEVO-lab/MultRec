@@ -18,6 +18,7 @@ NO SOLUTION FOUND
 Here is an example execution
 ./Multrec -g "((A__1, C__1),B__1);((A__2, B__2),B__3);" -s "((A,B),(C,D));" -d 3
 
+<pre>
 Required arguments:
 At least one of -g or -gf must be specified, and at least one of -s or -sf must be specified.
 -g   [g1;g2;...;gk]   Here g1,g2,...,gk are gene trees
@@ -42,3 +43,4 @@ Optional arguments:
                       examples with known outputs to expect, and larger random trees 
                       to see if the program terminates in an OK status on more complicated
                       datasets.
+</pre>
