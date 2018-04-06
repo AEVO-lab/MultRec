@@ -2,7 +2,7 @@ Multrec takes as input a species tree S, a set of gene trees, a duplication cost
 
 The leaves of the gene trees must map to the leaves of S.  The gene tree leaves are assumed to have the format [species_name]__[gene_name], for example HUMAN_BRCA2 indicates that the gene is mapped to the leaf of S names HUMAN.  The gene/species separator can be changed with the -spsep argument, and the position of the species name in the gene name with the -spindex argument, indexed at 0.  
 
-If your genes are name e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep "_" -spindex 1
+If your genes are named e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep "_" -spindex 1
 
 <pre>
 Required arguments:
