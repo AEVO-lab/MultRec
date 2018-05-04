@@ -18,7 +18,7 @@ set(SOURCES
 )
 
 
-#include_directory(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(.)
 
 
 add_executable(Multrec ${SOURCES} )
