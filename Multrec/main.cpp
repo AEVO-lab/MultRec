@@ -377,12 +377,12 @@ bool RunTest(vector<Node*> geneTrees, Node* speciesTree, unordered_map<Node*, No
 
 bool TestRandomTrees()
 {
-    int nbTests = 10;
+    int nbTests = 1;
     int nbOK = 0;
 
     cout<<endl<<"*** TestRandomTrees ***"<<endl;
 
-    cout<<endl<<"(testing "<<nbTests<<" random instances - this might take about an hour)"<<endl;
+    cout<<endl<<"(testing "<<nbTests<<" random instance(s) - this might take a few minutes)"<<endl;
 
     for (int i = 0; i < nbTests; i++)
     {
