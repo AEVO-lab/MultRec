@@ -14,8 +14,15 @@ using namespace std;
 int verbose = 0;
 
 
-void LabelGeneTreesWithSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree, MultiGeneReconciler &reconciler, MultiGeneReconcilerInfo &info, bool resetLabels = true)
+//labels the gene trees to prepare them for output.  Adds the species mapping to the out,
+//plus _Spec or _Dup_nbx, where x is a dup id.  Also returns a map of dups per species,
+//since we're computing it in this function anyway.  The value is a vector of int/Node pairs,
+//where the int is the gene tree index and the node is a dup node in this tree.
+//I agree that this function does more than just labelling with species mapping, but hey, life is tough.
+map<Node*, vector< pair<int, Node*> > > LabelGeneTreesWithSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree, MultiGeneReconciler &reconciler, MultiGeneReconcilerInfo &info, bool resetLabels = true)
 {
+    map<Node*, vector< pair<int, Node*> > > dups_per_species;
+    int dup_counter = 1;
     for (int i = 0; i < geneTrees.size(); i++)
     {
         Node* genetree = geneTrees[i];
@@ -35,7 +42,17 @@ void LabelGeneTreesWithSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree
                 lbl += info.partialMapping[g]->GetLabel();
 
                 if (reconciler.IsDuplication(g, info.partialMapping))
-                    lbl += "_Dup";
+                {
+                    lbl += "_Dup_nb" + Util::ToString(dup_counter);
+                    dup_counter++;
+
+                    vector< pair<int, Node*> > dups_for_s;
+                    if (dups_per_species.find( info.partialMapping[g] ) != dups_per_species.end())
+                        dups_for_s = dups_per_species[info.partialMapping[g]];
+                    pair<int, Node*> p = make_pair(i + 1, g);
+                    dups_for_s.push_back( p );
+                    dups_per_species[info.partialMapping[g]] = dups_for_s;
+                }
                 else
                     lbl += "_Spec";
                 g->SetLabel(lbl);
@@ -43,6 +60,8 @@ void LabelGeneTreesWithSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree
         }
         genetree->CloseIterator(it);
     }
+
+    return dups_per_species;
 }
 
 unordered_map<Node*, Node*> GetGeneSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree, string species_separator, int species_index)
@@ -167,7 +186,19 @@ MultiGeneReconcilerInfo Execute(map<string, string> args)
     else if (args.find("gf") != args.end())
     {
         string gcontent = Util::GetFileContent(args["gf"]);
-        vector<string> gstrs = Util::Split( Util::ReplaceAll( gcontent, "\n", ""), ";", false);
+
+        vector<string> lines = Util::Split( gcontent, "\n");
+        vector<string> gstrs;
+        for (int l = 0; l < lines.size(); l++)
+        {
+            vector<string> trees_on_line = Util::Split( lines[l], ";", false);
+            for (int t = 0; t < trees_on_line.size(); t++)
+            {
+                if (trees_on_line[t] != "")
+                    gstrs.push_back(trees_on_line[t]);
+            }
+        }
+
 
         for (int i = 0; i < gstrs.size(); i++)
         {
@@ -273,19 +304,43 @@ MultiGeneReconcilerInfo Execute(map<string, string> args)
         }
         else
         {
-            output += "COST=" + Util::ToString(info.GetCost(dupcost, losscost)) + "\n";
-            output += "DUPHEIGHT=" + Util::ToString(info.dupHeightSum) + "\n";
-            output += "NBLOSSES=" + Util::ToString(info.nbLosses) + "\n";
-            output += "SPECIESTREE=" + NewickLex::ToNewickString(speciesTree) + "\n";
+            output += "<COST>\n" + Util::ToString(info.GetCost(dupcost, losscost)) + "\n</COST>\n";
+            output += "<DUPHEIGHT>\n" + Util::ToString(info.dupHeightSum) + "\n</DUPHEIGHT>\n";
+            output += "<NBLOSSES>\n" + Util::ToString(info.nbLosses) + "\n</NBLOSSES>\n";
+            output += "<SPECIESTREE>\n" + NewickLex::ToNewickString(speciesTree) + "\n</SPECIESTREE>\n";
 
-            LabelGeneTreesWithSpeciesMapping(geneTrees, speciesTree, reconciler, info, false);
+            map<Node*, vector< pair<int, Node*> > > dups_per_species = LabelGeneTreesWithSpeciesMapping(geneTrees, speciesTree, reconciler, info, false);
 
-            output += "GENETREES=";
+            output += "<GENETREES>\n";
             for (int t = 0; t < geneTrees.size(); t++)
             {
-                output += NewickLex::ToNewickString(geneTrees[t]);
+                output += NewickLex::ToNewickString(geneTrees[t]) + "\n";
             }
-            output += "\n";
+            output += "</GENETREES>\n";
+
+            output += "<DUPS_PER_SPECIES>\n";
+            TreeIterator* itsp = speciesTree->GetPostOrderIterator();
+            while (Node* s = itsp->next())
+            {
+                if (dups_per_species.find(s) != dups_per_species.end())
+                {
+                    output += "[" + s->GetLabel() + "] ";
+                    vector< pair<int, Node*> > dups_for_s = dups_per_species[s];
+
+                    for (int d = 0; d < dups_for_s.size(); d++)
+                    {
+                        pair<int, Node*> p = dups_for_s[d];
+                        string lbl = p.second->GetLabel();
+                        lbl = Util::GetSubstringAfter(lbl, "_");
+
+                        output += lbl + " (G" + Util::ToString(p.first) + ") ";
+
+                    }
+                    output += "\n";
+                }
+            }
+            speciesTree->CloseIterator(itsp);
+            output += "</DUPS_PER_SPECIES>\n";
         }
 
         if (outfile == "")
@@ -712,6 +767,14 @@ int main(int argc, char *argv[])
     }
     else
     {
+        //ML's ad-hoc testing stuff for Windows.
+        /*args["d"] = "10";
+        args["l"] = "0.1";
+        args["gf"] = "W:/Users/Manuel/Documents/GitHub/Multrec/Multrec/Multrec/sample_data/geneTrees.txt";
+        args["sf"] = "W:/Users/Manuel/Documents/GitHub/Multrec/Multrec/Multrec/sample_data/speciesTree.txt";
+        args["o"] = "W:/Users/Manuel/Desktop/tmp/out.txt";*/
+
+
         Execute(args);
         return 0;
     }

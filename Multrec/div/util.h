@@ -335,7 +335,7 @@ public:
 
     static string GetSubstringAfter(string s, string separator)
     {
-        int pos = s.find_last_of(separator);
+        int pos = s.find_first_of(separator);
 
         if (pos != string::npos)
             return s.substr(pos + 1);
