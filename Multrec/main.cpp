@@ -103,6 +103,9 @@ void PrintHelp()
             <<"If no solution is found (when h is too small), then the output is simply"<<endl
             <<"NO SOLUTION FOUND"<<endl
             <<endl
+            <<"Sample command line:"<<endl
+            <<"./Multrec -d 10 -l 3 -gf ./sample_data/geneTrees.txt -sf ./sample_data/speciesTree.txt"
+            <<endl
             <<"Required arguments:"<<endl
             <<"At least one of -g or -gf must be specified, and at least one of -s or -sf must be specified."<<endl
             <<"-g   [g1;g2;...;gk]   Here g1,g2,...,gk are gene trees"<<endl
