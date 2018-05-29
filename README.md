@@ -7,13 +7,19 @@ The leaves of the gene trees must map to the leaves of S.  The gene tree leaves 
 If your genes are name e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep \_\ -spindex 1
 
 The format of the output is a pseudo-XML format, where the value of each field named NAME_OF_FIELD is surrounded by <NAME_OF_FIELD> and </NAME_OF_FIELD> tags.  Each tag appears on its own line."
-Please look at sample_data/out_sample.txt for an example
+Please look at sample_data/out_sample.txt for an example.
 The fields that are in the output are:
+
 COST: the total cost of the mapping
+
 DUPHEIGHT: the sum of duplication heights
+
 NBLOSSES: the number of losses
+
 SPECIESTREE: the species tree newick, with internal nodes labeled by a species id given by the program.
+
 GENETREES: all the gene tree newick, one per line. Internal nodes are labeled by the mapping and a duplication id.  For instance, an internal node labeled 14_Dup_nb2 means that the node is mapped to species 14, and it is a duplication whose id is Dup_nb2
+
 DUPS_PER_SPECIES: each line contains the list of duplications mapped to each species.  For instance, the line '[2] Dup_nb2 (G4) Dup_nb5 (G5)' means that the species with id 2 has two dup nodes mapping to it: the duplication with id Dup_nb2 from the gene tree 4 (that is what the G4 is for), and the duplication with id Dup_nb4 from the gene tree 5.
 
 If no solution is found (when h is too small), then the output is simply
