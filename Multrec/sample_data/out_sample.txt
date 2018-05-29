@@ -1,0 +1,75 @@
+<COST>
+1349
+</COST>
+<DUPHEIGHT>
+8
+</DUPHEIGHT>
+<NBLOSSES>
+423
+</NBLOSSES>
+<SPECIESTREE>
+(((((((((aves, rept)0, mamm)1, amph)2, ((oste, chon)3, agna)4)5, echi)6, (((moll, anne)7, arth)8, acoe)9)10, (embr, chlo)11)12, prot)13, fung)14;
+</SPECIESTREE>
+<GENETREES>
+(((aves, mamm)1_Spec, arth)10_Spec, prot)13_Spec;
+(((aves, mamm)1_Spec, arth)10_Spec, amph)10_Dup_nb1;
+(((aves, mamm)1_Spec, amph)2_Spec, chon)5_Spec;
+(((amph, aves)2_Spec, mamm)2_Dup_nb2, chon)5_Spec;
+((((acoe, mamm)10_Spec, chlo)12_Spec, fung)14_Spec, prot)14_Dup_nb3;
+(((((echi, arth)10_Spec, mamm)10_Dup_nb4, embr)12_Spec, fung)14_Spec, prot)14_Dup_nb5;
+((((echi, arth)10_Spec, mamm)10_Dup_nb6, prot)13_Spec, embr)13_Dup_nb7;
+(((amph, mamm)2_Spec, oste)5_Spec, aves)5_Dup_nb8;
+(((aves, mamm)1_Spec, amph)2_Spec, oste)5_Spec;
+(((aves, mamm)1_Spec, oste)5_Spec, amph)5_Dup_nb9;
+((chlo, embr)11_Spec, (fung, mamm)14_Spec)14_Dup_nb10;
+(((arth, mamm)10_Spec, fung)14_Spec, embr)14_Dup_nb11;
+(((aves, mamm)1_Spec, fung)14_Spec, embr)14_Dup_nb12;
+((((aves, mamm)1_Spec, amph)2_Spec, chon)5_Spec, oste)5_Dup_nb13;
+(((rept, aves)0_Spec, mamm)1_Spec, chon)5_Spec;
+(((moll, mamm)10_Spec, amph)10_Dup_nb14, arth)10_Dup_nb15;
+(((moll, mamm)10_Spec, echi)10_Dup_nb16, arth)10_Dup_nb17;
+(((embr, mamm)12_Spec, fung)14_Spec, arth)14_Dup_nb18;
+((((aves, mamm)1_Spec, acoe)10_Spec, arth)10_Dup_nb19, fung)14_Spec;
+(((acoe, arth)9_Spec, mamm)10_Spec, fung)14_Spec;
+(((acoe, mamm)10_Spec, arth)10_Dup_nb20, fung)14_Spec;
+(((embr, mamm)12_Spec, fung)14_Spec, prot)14_Dup_nb21;
+(((aves, mamm)1_Spec, amph)2_Spec, fung)14_Spec;
+(((amph, aves)2_Spec, mamm)2_Dup_nb22, chon)5_Spec;
+(((amph, mamm)2_Spec, echi)6_Spec, anne)10_Spec;
+((embr, prot)13_Spec, (fung, (echi, (mamm, amph)2_Spec)6_Spec)14_Spec)14_Dup_nb23;
+(((echi, mamm)6_Spec, chlo)12_Spec, embr)12_Dup_nb24;
+(((((anne, moll)7_Spec, arth)8_Spec, echi)10_Spec, ((aves, mamm)1_Spec, oste)5_Spec)10_Dup_nb25, acoe)10_Dup_nb26;
+((((amph, mamm)2_Spec, echi)6_Spec, fung)14_Spec, prot)14_Dup_nb27;
+(((chlo, embr)11_Spec, ((echi, mamm)6_Spec, acoe)10_Spec)12_Spec, fung)14_Spec;
+(((embr, mamm)12_Spec, fung)14_Spec, prot)14_Dup_nb28;
+(((amph, mamm)2_Spec, embr)12_Spec, prot)13_Spec;
+((((((acoe, echi)10_Spec, (arth, mamm)10_Spec)10_Dup_nb29, embr)12_Spec, chlo)12_Dup_nb30, fung)14_Spec, prot)14_Dup_nb31;
+((((rept, mamm)1_Spec, amph)2_Spec, oste)5_Spec, chon)5_Dup_nb32;
+(((amph, mamm)2_Spec, oste)5_Spec, chon)5_Dup_nb33;
+(((((amph, mamm)2_Spec, echi)6_Spec, arth)10_Spec, embr)12_Spec, acoe)12_Dup_nb34;
+(((amph, aves)2_Spec, mamm)2_Dup_nb35, rept)5_Dup_nb36;
+(((aves, mamm)1_Spec, agna)5_Spec, moll)10_Spec;
+((amph, mamm)2_Spec, (rept, aves)0_Spec)2_Dup_nb37;
+((((amph, mamm)2_Spec, arth)10_Spec, embr)12_Spec, fung)14_Spec;
+(((amph, mamm)2_Spec, oste)5_Spec, chon)5_Dup_nb38;
+((((aves, mamm)1_Spec, arth)10_Spec, prot)13_Spec, fung)14_Spec;
+(((arth, mamm)10_Spec, fung)14_Spec, prot)14_Dup_nb39;
+(((arth, mamm)10_Spec, embr)12_Spec, prot)13_Spec;
+((((chlo, prot)13_Spec, embr)13_Dup_nb40, ((arth, mamm)10_Spec, echi)10_Dup_nb41)13_Dup_nb42, fung)14_Spec;
+(((arth, mamm)10_Spec, embr)12_Spec, fung)14_Spec;
+(((chlo, prot)13_Spec, ((echi, mamm)6_Spec, acoe)10_Spec)13_Dup_nb43, fung)14_Spec;
+((((chlo, embr)11_Spec, (aves, mamm)1_Spec)12_Spec, prot)13_Spec, fung)14_Spec;
+(((((amph, aves)2_Spec, mamm)2_Dup_nb44, arth)10_Spec, embr)12_Spec, fung)14_Spec;
+(((arth, mamm)10_Spec, fung)14_Spec, prot)14_Dup_nb45;
+(((amph, aves)2_Spec, mamm)2_Dup_nb46, oste)5_Spec;
+(((amph, mamm)2_Spec, chon)5_Spec, arth)10_Spec;
+((((chlo, embr)11_Spec, (acoe, mamm)10_Spec)12_Spec, prot)13_Spec, fung)14_Spec;
+</GENETREES>
+<DUPS_PER_SPECIES>
+[2] Dup_nb2 (G4) Dup_nb22 (G24) Dup_nb35 (G37) Dup_nb37 (G39) Dup_nb44 (G49) Dup_nb46 (G51) 
+[5] Dup_nb8 (G8) Dup_nb9 (G10) Dup_nb13 (G14) Dup_nb32 (G34) Dup_nb33 (G35) Dup_nb36 (G37) Dup_nb38 (G41) 
+[10] Dup_nb1 (G2) Dup_nb4 (G6) Dup_nb6 (G7) Dup_nb14 (G16) Dup_nb15 (G16) Dup_nb16 (G17) Dup_nb17 (G17) Dup_nb19 (G19) Dup_nb20 (G21) Dup_nb25 (G28) Dup_nb26 (G28) Dup_nb29 (G33) Dup_nb41 (G45) 
+[12] Dup_nb24 (G27) Dup_nb30 (G33) Dup_nb34 (G36) 
+[13] Dup_nb7 (G7) Dup_nb40 (G45) Dup_nb42 (G45) Dup_nb43 (G47) 
+[14] Dup_nb3 (G5) Dup_nb5 (G6) Dup_nb10 (G11) Dup_nb11 (G12) Dup_nb12 (G13) Dup_nb18 (G18) Dup_nb21 (G22) Dup_nb23 (G26) Dup_nb27 (G29) Dup_nb28 (G31) Dup_nb31 (G33) Dup_nb39 (G43) Dup_nb45 (G50) 
+</DUPS_PER_SPECIES>
