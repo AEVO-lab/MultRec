@@ -21,6 +21,9 @@ NO SOLUTION FOUND
 Here is an example execution
 ./Multrec -g "((A__1, C__1),B__1);((A__2, B__2),B__3);" -s "((A,B),(C,D));" -d 3
 
+or using the sample data 
+./Multrec -d 10 -l 3 -gf ./sample_data/geneTrees.txt -sf ./sample_data/speciesTree.txt
+
 Required arguments:
 At least one of -g or -gf must be specified, and at least one of -s or -sf must be specified.
 -g   [g1;g2;...;gk]   Here g1,g2,...,gk are gene trees
