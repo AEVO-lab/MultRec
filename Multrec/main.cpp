@@ -93,13 +93,16 @@ void PrintHelp()
             <<"The leaves of the gene trees must map to the leaves of S.  The gene tree leaves are assumed to have the format [species_name]__[gene_name], for example HUMAN_BRCA2 indicates that the gene is mapped to the leaf of S names HUMAN.  The gene/species separator can be changed with the -spsep argument, and the position of the species name in the gene name with the -spindex argument, indexed at 0.  "<<endl
             <<"If your genes are name e.g. GENENAME_SPECIESNAME_OTHERSTUFF, you can set -spsep \"_\" -spindex 1"<<endl
             <<endl
-            <<"The format of the output is 5 lines, as follows"<<endl
-            <<"COST=[total cost of mapping]"<<endl
-            <<"DUPHEIGHT=[sum of duplication heights]"<<endl
-            <<"NBLOSSES=[number of losses]"<<endl
-            <<"SPECIESTREE=[species tree newick, with internal nodes labeled"<<endl
-            <<"GENETREES=[all gene tree newick separated by ;.  Internal nodes are labeled by mapping]"<<endl
-            <<endl
+            <<"The format of the output is a pseudo-XML format, where the value of each field named NAME_OF_FIELD is surrounded by <NAME_OF_FIELD> and </NAME_OF_FIELD> tags.  Each tag appears on its own line."<<endl
+			<<"Please look at sample_data/out_sample.txt for an example"<<endl
+			<<"The fields that are in the output are:"<<endl
+            <<"COST: the total cost of the mapping"<<endl
+            <<"DUPHEIGHT: the sum of duplication heights"<<endl
+            <<"NBLOSSES: the number of losses"<<endl
+            <<"SPECIESTREE: the species tree newick, with internal nodes labeled by a species id given by the program."<<endl
+            <<"GENETREES: all the gene tree newick, one per line. Internal nodes are labeled by the mapping and a duplication id.  For instance, an internal node labeled 14_Dup_nb2 means that the node is mapped to species 14, and it is a duplication whose id is Dup_nb2"<<endl
+			<<"DUPS_PER_SPECIES: each line contains the list of duplications mapped to each species.  For instance, the line '[2] Dup_nb2 (G4) Dup_nb5 (G5)' means that the species with id 2 has two dup nodes mapping to it: the duplication with id Dup_nb2 from the gene tree 4 (that is what the G4 is for), and the duplication with id Dup_nb4 from the gene tree 5."<<endl
+			<<endl
             <<"If no solution is found (when h is too small), then the output is simply"<<endl
             <<"NO SOLUTION FOUND"<<endl
             <<endl
