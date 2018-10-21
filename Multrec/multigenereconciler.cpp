@@ -1,5 +1,10 @@
 #include "multigenereconciler.h"
 
+/**
+See multigenereconciler.h for documentation on methods in this class.
+**/
+
+
 MultiGeneReconciler::MultiGeneReconciler(vector<Node *> &geneTrees, Node *speciesTree, unordered_map<Node *, Node *> &geneSpeciesMapping, double dupcost, double losscost, int maxDupHeight)
 {
     this->geneTrees = geneTrees;
