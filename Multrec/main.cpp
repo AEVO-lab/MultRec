@@ -14,11 +14,23 @@ using namespace std;
 int verbose = 0;
 
 
-//labels the gene trees to prepare them for output.  Adds the species mapping to the out,
-//plus _Spec or _Dup_nbx, where x is a dup id.  Also returns a map of dups per species,
-//since we're computing it in this function anyway.  The value is a vector of int/Node pairs,
-//where the int is the gene tree index and the node is a dup node in this tree.
-//I agree that this function does more than just labelling with species mapping, but hey, life is tough.
+/*
+This is a postprocessing function for outputting results.
+Labels the gene trees to prepare them for output.  Adds the species mapping to the out,
+plus _Spec or _Dup_nbx, where x is a dup id.  Also returns a map of dups per species,
+since we're computing it in this function anyway.  The value is, for each species, a vector of int/Node pairs,
+where the int is the gene tree index and the node is a dup node in this tree.
+
+Parameters
+geneTrees: a vector of gene trees
+speciesTree: the species tree
+info: the MultiGeneReconciler the was used to reeconcile the gene trees.
+resetLabels: if true, internal node labels will be erased and reset by the function.  If false, the _Spec or _Dup label only gets appended
+
+Output
+A map where keys are species, and values are the list of duplication events in the species. 
+A duplication event is represented as an <int, Node*>, where int is the gene tree index and Node* is the node of this gene tree that is a dup.
+*/
 map<Node*, vector< pair<int, Node*> > > LabelGeneTreesWithSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree, MultiGeneReconciler &reconciler, MultiGeneReconcilerInfo &info, bool resetLabels = true)
 {
     map<Node*, vector< pair<int, Node*> > > dups_per_species;
@@ -64,9 +76,25 @@ map<Node*, vector< pair<int, Node*> > > LabelGeneTreesWithSpeciesMapping(vector<
     return dups_per_species;
 }
 
+
+/**
+Computes a gene to species mapping for each leaf of gene tree in the vector.  The label of the genes is used to 
+determine its species.  For instance, if gene names have the form "GENE_SPECIES", then speciesSeparator is "_" 
+and speciesIndex is 1.
+
+Parameters
+geneTrees: a vector of gene trees.
+speciesTrees: the species tree.
+species_separator: the string used to separate genes from species names in the gene labels. 
+speciesIndex: the index at which the species name resides in the gene label after being split by the separator.
+
+Output
+A map where the keys are the gene leaves and the values are the species the gene is mapped to.
+
+**/
 unordered_map<Node*, Node*> GetGeneSpeciesMapping(vector<Node*> geneTrees, Node* speciesTree, string species_separator, int species_index)
 {
-    //compute gene leaf to species leaf mapping.  Could be faster by using a map for the species leaves by name...
+    //Note: could be faster by using a map for the species leaves by name...
     unordered_map<Node*, Node*> geneSpeciesMapping;
 
     for (int i = 0; i < geneTrees.size(); i++)
@@ -83,7 +111,9 @@ unordered_map<Node*, Node*> GetGeneSpeciesMapping(vector<Node*> geneTrees, Node*
 }
 
 
-
+/**
+Prints the help.
+**/
 void PrintHelp()
 {
     cout    <<"------------------------------------------------------------------"<<endl
@@ -136,7 +166,15 @@ void PrintHelp()
 }
 
 
+/**
+Executes a user command line.  This is outside the main, as the main can perform other tasks (e.g. unit testing).
 
+Parameters
+args: map of argument/values from the command line
+
+Output
+A MultiGeneReconcilerInfo object containing all the reconciliation information.
+**/
 MultiGeneReconcilerInfo Execute(map<string, string> args)
 {
     MultiGeneReconcilerInfo info;
@@ -282,11 +320,7 @@ MultiGeneReconcilerInfo Execute(map<string, string> args)
     }
 
 
-    /*if (losscost >= dupcost)
-    {
-        //do usual lca mapping stuff
-    }
-    else*/
+    //OK, so all preprocessing is done.  Now we reconcile the trees.
     {
 
         if (dupcost/losscost > 20)
@@ -374,7 +408,15 @@ MultiGeneReconcilerInfo Execute(map<string, string> args)
 
 
 
+/**
+Performs some unit tests.  The provided geneTrees are reconciled with the speciesTree under the specified costs and 
+max dup height.  The results are compared with the expected values.  The algorithm might be expected to fail (e.g. it found 
+no solution), in which case isExpectedBad should be true.  If detailed is true, then some debug info will be output.
+This function will output material on stdout.
 
+Output
+True if reconciliation yields the same dup heigh sum and losses as expected (or algo failed and this was expected).  otherwise false.
+**/
 bool RunTest(vector<Node*> geneTrees, Node* speciesTree, unordered_map<Node*, Node*> geneSpeciesMapping,
              double dupcost, double losscost, int maxDupHeight,
              int expectedDupHeightSum, int expectedNbLosses, bool isExpectedBad, bool detailed = false)
@@ -435,8 +477,11 @@ bool RunTest(vector<Node*> geneTrees, Node* speciesTree, unordered_map<Node*, No
 
 
 
-
-bool TestRandomTrees()
+/**
+Performs unit test on random trees.  As there is no way to check for valid results, it merely checks that no run fails.
+Outputs results to stdout.
+**/
+void TestRandomTrees()
 {
     int nbTests = 1;
     int nbOK = 0;
@@ -538,10 +583,14 @@ bool TestRandomTrees()
     }
 
     cout<<"TOTAL = "<<nbOK<<"/"<<nbTests<<endl;
+	
+
 }
 
 
-
+/**
+Performs some unit tests on known instances and outputs results on stdout.
+**/
 void TestBasicInstance()
 {
     cout<<endl<<"*** TestBasicInstance ***"<<endl;
@@ -592,7 +641,10 @@ void TestBasicInstance()
 }
 
 
-
+/**
+Performs unit tests on caterpillar species trees, which are somewhat more difficult to handle.  
+Outputs results on stdout.
+**/
 void TestCaterpillarSpeciesTree()
 {
     cout<<endl<<"*** TestCaterpillarSpeciesTree ***"<<endl<<endl;
